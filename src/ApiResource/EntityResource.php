@@ -135,6 +135,10 @@ abstract class EntityResource implements ResourceInterface
         $this->hideUnpublishedInstances($user, $columns);
         $this->applyWhereSql($user, $columns);
 
+        if (empty($columns)) {
+          $columns = null;
+        }
+
         if (1 > ($total = $adapter->countBy($columns))) {
             return [
                 'message' => $this->container->get('translator')->trans('huh.api.message.resource.none_existing', ['%resource%' => $this->verboseName]),
