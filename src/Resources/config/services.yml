@@ -28,6 +28,7 @@ services:
       - ["matchAttribute", ["_scope", "api_login_user"]]
   huh.api.jwt_coder:
     class: HeimrichHannot\ApiBundle\Security\JWTCoder
+    public: true
     arguments:
       - "%secret%"
   huh.api.security.token_authenticator:
@@ -36,6 +37,7 @@ services:
       - "@contao.framework"
       - "@huh.api.jwt_coder"
       - "@translator"
+      - "@security.encoder_factory"
   huh.api.security.user_provider:
     class: HeimrichHannot\ApiBundle\Security\User\UserProvider
     arguments:
@@ -47,6 +49,7 @@ services:
       - "@contao.framework"
       - "@huh.api.jwt_coder"
       - "@translator"
+      - "@security.encoder_factory"
   huh.api.manager.resource:
     class: HeimrichHannot\ApiBundle\Manager\ApiResourceManager
     public: true

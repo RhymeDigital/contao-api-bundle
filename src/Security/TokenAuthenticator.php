@@ -23,7 +23,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        $this->translator->setLocale($request->getPreferredLanguage());
+        $this->translator->setLocale($request->getDefaultLocale());
 
         if (!$request->headers->has('Authorization')) {
             throw new AuthenticationException($this->translator->trans('huh.api.exception.auth.missing_authorization_header'));

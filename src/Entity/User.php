@@ -172,7 +172,7 @@ class User implements UserInterface
      */
     public function setLoginCount(int $loginCount)
     {
-        $this->_model->loginCount = $loginCount;
+        $this->_model->loginAttempts = $loginCount;
     }
 
     /**
@@ -180,7 +180,7 @@ class User implements UserInterface
      */
     public function getLoginCount(): int
     {
-        return $this->_model->loginCount;
+        return $this->_model->loginAttempts;
     }
 
     /**

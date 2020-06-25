@@ -10,6 +10,7 @@ namespace HeimrichHannot\ApiBundle\Security;
 
 use Contao\Config;
 use Contao\System;
+use Contao\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -22,7 +23,7 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        $this->translator->setLocale($request->getPreferredLanguage());
+        $this->translator->setLocale($request->getDefaultLocale());
 
         if ('POST' !== $request->getMethod()) {
             throw new AuthenticationException($this->translator->trans('huh.api.exception.auth.post_method_only'));
@@ -51,13 +52,10 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user)
     {
         $time = time();
-        $authenticated = password_verify($credentials['password'], $user->getPassword());
-        $needsRehash = password_needs_rehash($user->getPassword(), PASSWORD_DEFAULT);
 
-        // Re-hash the password if the algorithm has changed
-        if ($authenticated && $needsRehash) {
-            $this->password = password_hash($credentials['password'], PASSWORD_DEFAULT);
-        }
+        // TODO: move it to the hook below for BC
+        $encoder = $this->encoderFactory->getEncoder(User::class);
+        $authenticated = $encoder->isPasswordValid($user->getPassword(), $credentials['password'], $user->getSalt());
 
         // HOOK: pass credentials to callback functions
         if (!$authenticated && isset($GLOBALS['TL_HOOKS']['checkCredentials']) && \is_array($GLOBALS['TL_HOOKS']['checkCredentials'])) {
@@ -75,7 +73,7 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
         }
 
         if (!$authenticated) {
-            $user->setLoginCount($user->getLoginCount() - 1);
+            $user->setLoginCount($user->getLoginCount() + 1);
             $user->getModel()->save();
 
             throw new AuthenticationException($this->translator->trans('huh.api.exception.auth.invalid_credentials'));
@@ -86,7 +84,7 @@ class UsernamePasswordAuthenticator extends AbstractGuardAuthenticator
 
         $user->setLastLogin($user->getCurrentLogin());
         $user->setCurrentLogin($time);
-        $user->setLoginCount((int) $config->get('loginCount'));
+        $user->setLoginCount(0);
         $user->getModel()->save();
 
         return true;
