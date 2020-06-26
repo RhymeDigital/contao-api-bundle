@@ -49,6 +49,7 @@
     },
     "extra": {
         "contao-manager-plugin": "HeimrichHannot\\ApiBundle\\ContaoManager\\Plugin"
-    }
+    },
+    "version" : "2.2.0"
 }
 
