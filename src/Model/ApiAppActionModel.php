@@ -14,13 +14,13 @@ class ApiAppActionModel extends \Model
 {
     protected static $strTable = 'tl_api_app_action';
 
-    public function getCurrentActionConfig(string $actionType, ApiAppModel $app)
+    public function getCurrentActionConfig(string $resource, string $actionType, ApiAppModel $app)
     {
         $columns = [
-            'tl_api_app_action.pid=?', 'tl_api_app_action.type=?',
+            'tl_api_app_action.pid=?', 'tl_api_app_action.resourceAction=?', 'tl_api_app_action.resource=?',
         ];
 
-        $values = [$app->id, $actionType];
+        $values = [$app->id, $actionType, $resource];
 
         System::getContainer()->get('huh.utils.model')->addPublishedCheckToModelArrays(
             'tl_api_app_action', 'published', 'start', 'stop', $columns);

@@ -77,10 +77,8 @@ $GLOBALS['TL_DCA']['tl_api_app'] = [
         ],
     ],
     'palettes'    => [
-        '__selector__'    => ['type', 'limitFields', 'limitFormattedFields', 'published'],
-        'default'         => '{general_legend},title,type',
-        'resource'        => '{general_legend},title,type,author;{resource_legend},resource,resourceActions,categories;{security_legend},key,groups,mGroups;{publish_legend},published',
-        'entity_resource' => '{general_legend},title,type,author;{resource_legend},resource;{security_legend},key,groups,mGroups;{publish_legend},published',
+        '__selector__'    => ['published'],
+        'default'         => '{general_legend},title,type,author;{security_legend},key,groups,mGroups;{publish_legend},published',
     ],
     'subpalettes' => [
         'published'            => 'start,stop',
@@ -102,17 +100,6 @@ $GLOBALS['TL_DCA']['tl_api_app'] = [
             'eval'      => ['rgxp' => 'datim', 'datepicker' => true, 'timepicker' => true, 'doNotCopy' => true, 'mandatory' => true, 'tl_class' => 'w50'],
             'sql'       => "varchar(64) NOT NULL default ''",
         ],
-        'type'                   => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_api_app']['type'],
-            'flag'      => 1,
-            'exclude'   => true,
-            'filter'    => true,
-            'inputType' => 'select',
-            'options'   => System::getContainer()->get('huh.api.manager.resource')::RESOURCE_TYPES,
-            'reference' => &$GLOBALS['TL_LANG']['tl_api_app']['reference'],
-            'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 chosen', 'submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true],
-            'sql'       => "varchar(32) NOT NULL default ''",
-        ],
         'title'                  => [
             'label'     => &$GLOBALS['TL_LANG']['tl_api_app']['title'],
             'flag'      => 1,
@@ -121,28 +108,6 @@ $GLOBALS['TL_DCA']['tl_api_app'] = [
             'inputType' => 'text',
             'eval'      => ['maxlength' => 255, 'tl_class' => 'w50'],
             'sql'       => "varchar(255) NOT NULL default ''",
-        ],
-        'resource'               => [
-            'label'            => &$GLOBALS['TL_LANG']['tl_api_app']['resource'],
-            'flag'             => 1,
-            'exclude'          => true,
-            'filter'           => true,
-            'inputType'        => 'select',
-            'options_callback' => ['huh.api.manager.resource', 'choices'],
-            'reference'        => &$GLOBALS['TL_LANG']['tl_api_app']['reference'],
-            'eval'             => ['maxlength' => 32, 'tl_class' => 'w50 chosen', 'submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true],
-            'sql'              => "varchar(32) NOT NULL default ''",
-        ],
-        'resourceActions'        => [
-            'label'     => &$GLOBALS['TL_LANG']['tl_api_app']['resourceActions'],
-            'flag'      => 1,
-            'exclude'   => true,
-            'filter'    => true,
-            'inputType' => 'checkbox',
-            'options'   => ['api_resource_create', 'api_resource_update', 'api_resource_list', 'api_resource_show', 'api_resource_delete'],
-            'reference' => &$GLOBALS['TL_LANG']['tl_api_app']['reference'],
-            'sql'       => "blob NULL",
-            'eval'      => ['multiple' => true, 'tl_class' => 'w50 autoheight'],
         ],
         'mGroups'                => [
             'label'      => &$GLOBALS['TL_LANG']['tl_api_app']['mGroups'],
@@ -194,12 +159,3 @@ $GLOBALS['TL_DCA']['tl_api_app'] = [
         ],
     ],
 ];
-
-\HeimrichHannot\CategoriesBundle\Backend\Category::addMultipleCategoriesFieldToDca(
-    'tl_api_app', 'categories',
-    [
-        'addPrimaryCategory'   => false,
-        'forcePrimaryCategory' => false,
-        'mandatory'            => false
-    ]
-);

@@ -74,11 +74,8 @@ $GLOBALS['TL_DCA']['tl_api_app_action'] = [
     'palettes'    => [
         '__selector__'        => ['type', 'limitFields', 'limitFormattedFields', 'hideUnpublishedInstances', 'addPublishedStartAndStop', 'published'],
         'default'             => '{general_legend},type;{publish_legend},published;',
-        'api_resource_create' => '{general_legend},type;{publish_legend},published;',
-        'api_resource_update' => '{general_legend},type;{publish_legend},published;',
-        'api_resource_list'   => '{general_legend},type;{config_legend},limitFields,limitFormattedFields,language,hideUnpublishedInstances,whereSql;{publish_legend},published;',
-        'api_resource_show'   => '{general_legend},type;{publish_legend},published;',
-        'api_resource_delete' => '{general_legend},type;{publish_legend},published;'
+        'resource'            => '{general_legend},type;{resource_legend},resource,resourceAction,categories;{publish_legend},published;',
+        'entity_resource'     => '{general_legend},type;{resource_legend},resource,resourceAction,categories;{config_legend},limitFields,limitFormattedFields,language,hideUnpublishedInstances,whereSql;{publish_legend},published;',
     ],
     'subpalettes' => [
         'limitFields'              => 'limitedFields',
@@ -107,15 +104,38 @@ $GLOBALS['TL_DCA']['tl_api_app_action'] = [
             'eval'    => ['rgxp' => 'datim', 'doNotCopy' => true],
             'sql'     => "int(10) unsigned NOT NULL default '0'"
         ],
-        'type'                     => [
+        'type'                   => [
             'label'     => &$GLOBALS['TL_LANG']['tl_api_app_action']['type'],
+            'flag'      => 1,
+            'exclude'   => true,
+            'filter'    => true,
+            'inputType' => 'select',
+            'options'   => System::getContainer()->get('huh.api.manager.resource')::RESOURCE_TYPES,
+            'reference' => &$GLOBALS['TL_LANG']['tl_api_app']['reference'],
+            'eval'      => ['maxlength' => 32, 'tl_class' => 'w50 chosen', 'submitOnChange' => true, 'mandatory' => true, 'includeBlankOption' => true],
+            'sql'       => "varchar(32) NOT NULL default ''",
+        ],
+        'resource'               => [
+            'label'            => &$GLOBALS['TL_LANG']['tl_api_app']['resource'],
+            'flag'             => 1,
+            'exclude'          => true,
+            'filter'           => true,
+            'inputType'        => 'select',
+            'options_callback' => ['huh.api.manager.resource', 'choices'],
+            'reference'        => &$GLOBALS['TL_LANG']['tl_api_app']['reference'],
+            'eval'             => ['maxlength' => 32, 'tl_class' => 'w50 chosen', 'mandatory' => true, 'includeBlankOption' => true],
+            'sql'              => "varchar(32) NOT NULL default ''",
+        ],
+        'resourceAction'        => [
+            'label'     => &$GLOBALS['TL_LANG']['tl_api_app']['resourceAction'],
+            'flag'      => 1,
             'exclude'   => true,
             'filter'    => true,
             'inputType' => 'select',
             'options'   => ['api_resource_create', 'api_resource_update', 'api_resource_list', 'api_resource_show', 'api_resource_delete'],
             'reference' => &$GLOBALS['TL_LANG']['tl_api_app']['reference'],
-            'eval'      => ['tl_class' => 'w50', 'mandatory' => true, 'includeBlankOption' => true, 'submitOnChange' => true],
-            'sql'       => "varchar(64) NOT NULL default ''"
+            'sql'       => "varchar(32) NOT NULL default ''",
+            'eval'      => ['mandatory' => true, 'tl_class' => 'w50 autoheight'],
         ],
         'limitFields'              => [
             'label'     => &$GLOBALS['TL_LANG']['tl_api_app_action']['limitFields'],
@@ -290,6 +310,15 @@ $GLOBALS['TL_DCA']['tl_api_app_action'] = [
         ]
     ]
 ];
+
+\HeimrichHannot\CategoriesBundle\Backend\Category::addMultipleCategoriesFieldToDca(
+    'tl_api_app_action', 'categories',
+    [
+        'addPrimaryCategory'   => false,
+        'forcePrimaryCategory' => false,
+        'mandatory'            => false
+    ]
+);
 
 
 class tl_api_app_action extends \Contao\Backend

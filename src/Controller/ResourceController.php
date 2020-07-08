@@ -141,25 +141,10 @@ class ResourceController extends Controller
             return false;
         }
 
-        $resourceManager = $this->container->get('huh.api.manager.resource');
-
-        switch ($app->type) {
-            case $resourceManager::TYPE_ENTITY_RESOURCE:
-                if (null === ($action = $this->container->get('huh.utils.model')->findOneModelInstanceBy('tl_api_app_action',
-                        ['tl_api_app_action.pid=?', 'tl_api_app_action.type=?'], [$app->id, $request->attributes->get('_route')]))) {
-                    return false;
-                }
-
-                break;
-
-            default:
-                $allowed = StringUtil::deserialize($app->resourceActions, true);
-
-                if (!\in_array($request->attributes->get('_route'), $allowed)) {
-                    return false;
-                }
-
-                break;
+        if (null === ($action = $this->container->get('huh.utils.model')->findOneModelInstanceBy('tl_api_app_action',
+                ['tl_api_app_action.pid=?', 'tl_api_app_action.resourceAction=?', 'tl_api_app_action.resource=?'],
+                [$app->id, $request->attributes->get('_route'), $request->attributes->get('alias')]))) {
+            return false;
         }
 
         return true;

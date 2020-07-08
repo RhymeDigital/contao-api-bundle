@@ -136,7 +136,7 @@ abstract class EntityResource implements ResourceInterface
         $this->applyWhereSql($user, $columns);
 
         if (empty($columns)) {
-          $columns = null;
+          $columns = array();
         }
 
         if (1 > ($total = $adapter->countBy($columns))) {

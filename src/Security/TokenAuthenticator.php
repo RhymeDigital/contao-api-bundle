@@ -82,15 +82,13 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
         $user->setApp($appModel);
 
-        if ($appModel->type === $this->container->get('huh.api.manager.resource')::TYPE_ENTITY_RESOURCE) {
-            $request = $this->container->get('request_stack')->getCurrentRequest();
+        $request = $this->container->get('request_stack')->getCurrentRequest();
 
-            $action = $this->container->get('huh.utils.model')->callModelMethod(
-                'tl_api_app_action', 'getCurrentActionConfig',
-                $request->attributes->get('_route'), $appModel);
+        $action = $this->container->get('huh.utils.model')->callModelMethod(
+            'tl_api_app_action', 'getCurrentActionConfig',
+            $request->attributes->get('alias'), $request->attributes->get('_route'), $appModel);
 
-            $user->setAppAction($action);
-        }
+        $user->setAppAction($action);
 
         // if user object is present here, JWT token did already match
         return true;

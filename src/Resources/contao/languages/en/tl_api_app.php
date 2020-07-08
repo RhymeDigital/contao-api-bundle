@@ -9,14 +9,8 @@ $lang['tstamp'][0]                 = 'Timestamp';
 $lang['tstamp'][1]                 = 'Last change date of the data record.';
 $lang['dateAdded'][0]              = 'Creation Date';
 $lang['dateAdded'][1]              = 'Date the record was created.';
-$lang['type'][0]                   = 'Type';
-$lang['type'][1]                   = 'Choose a type.';
 $lang['title'][0]                  = 'Title';
 $lang['title'][1]                  = 'Please enter the title here.';
-$lang['resource'][0]               = 'Resource';
-$lang['resource'][1]               = 'Please select a resource.';
-$lang['resourceActions'][0]        = 'Actions available';
-$lang['resourceActions'][1]        = 'Select the available actions related to this resource here.';
 $lang['key'][0]                    = 'API key';
 $lang['key'][1]                    = 'This automatically generated key must be transmitted with every connection to the API.';
 $lang['groups'][0]                 = 'Allowed user groups';
@@ -49,7 +43,6 @@ $lang['delete']     = ['Delete application', 'Delete application ID %s'];
 $lang['toggle']     = ['Toggle application', 'Toggle application ID %s active/inactive'];
 $lang['show']       = ['Application Details', 'Show Details for application ID %s'];
 
-
 /**
  * Resources
  */
@@ -61,4 +54,11 @@ $lang['reference'] = [
     'api_resource_list'                                                        => 'Get resources (list)',
     'api_resource_show'                                                        => 'Show single resource (show)',
     'api_resource_delete'                                                      => 'Remove resource (delete)',
+];
+$lang['reference_short'] = [
+    'api_resource_create'                                                      => 'Create',
+    'api_resource_update'                                                      => 'Update',
+    'api_resource_list'                                                        => 'List',
+    'api_resource_show'                                                        => 'Show',
+    'api_resource_delete'                                                      => 'Delete',
 ];

@@ -13,10 +13,6 @@ $lang['type'][0]                   = 'Typ';
 $lang['type'][1]                   = 'Wählen Sie einen Typ aus.';
 $lang['title'][0]                  = 'Titel';
 $lang['title'][1]                  = 'Geben Sie hier bitte den Titel ein.';
-$lang['resource'][0]               = 'Ressource';
-$lang['resource'][1]               = 'Wählen Sie eine Ressource aus.';
-$lang['resourceActions'][0]        = 'Verfügbare Aktionen';
-$lang['resourceActions'][1]        = 'Wählen Sie hier die verfügbaren Aktionen im Bezug auf diese Ressource.';
 $lang['key'][0]                    = 'API-Schlüssel';
 $lang['key'][1]                    = 'Dieser automatisch erzeugte Schlüssel muss bei jeder Verbindung mit der API übermittelt werden.';
 $lang['groups'][0]                 = 'Erlaubte Benutzergruppen';
@@ -61,4 +57,11 @@ $lang['reference'] = [
     'api_resource_list'                                                        => 'Ressourcen auflisten (list)',
     'api_resource_show'                                                        => 'Ressource anzeigen (show)',
     'api_resource_delete'                                                      => 'Ressource löschen (delete)',
+];
+$lang['reference_short'] = [
+    'api_resource_create'                                                      => 'Create',
+    'api_resource_update'                                                      => 'Update',
+    'api_resource_list'                                                        => 'List',
+    'api_resource_show'                                                        => 'Show',
+    'api_resource_delete'                                                      => 'Delete',
 ];
