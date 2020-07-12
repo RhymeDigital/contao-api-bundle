@@ -101,12 +101,17 @@ abstract class EntityResource implements ResourceInterface
             ];
         }
 
-        $model->setRow($data);
+        $model->mergeRow($data);
+        foreach ($data as $k => $v) {
+            $model->markModified($k);
+        }
         $model->save();
+
+        $output = $this->prepareInstances([$model], $request, $user);
 
         return [
             'message' => $this->container->get('translator')->trans('huh.api.message.resource.update_success', ['%resource%' => $this->verboseName, '%id%' => $id]),
-            'item' => $model->row(),
+            'item' => $output[0],
         ];
     }
 
@@ -136,7 +141,7 @@ abstract class EntityResource implements ResourceInterface
         $this->applyWhereSql($user, $columns);
 
         if (empty($columns)) {
-          $columns = array();
+          $columns = null;
         }
 
         if (1 > ($total = $adapter->countBy($columns))) {
